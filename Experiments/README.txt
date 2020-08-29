@@ -1,0 +1,1 @@
+This part is comprised completely of my own projects and experiemts with Image Processing
