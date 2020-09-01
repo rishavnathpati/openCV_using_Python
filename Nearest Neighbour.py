@@ -14,13 +14,9 @@ def nearest_neighbour(A, new_size):
     new_row_positions = np.array(range(new_size[0]))+1
     new_col_positions = np.array(range(new_size[1]))+1
 
-    # normalize new row and col positions by ratios
-    new_row_positions = new_row_positions / row_ratio
-    new_col_positions = new_col_positions / col_ratio
-
-    # apply ceil to normalized new row and col positions
-    new_row_positions = np.ceil(new_row_positions)
-    new_col_positions = np.ceil(new_col_positions)
+    # normalize and ceil new row and col positions by ratios
+    new_row_positions = np.ceil(new_row_positions / row_ratio)
+    new_col_positions = np.ceil(new_col_positions / col_ratio)
 
     # find how many times to repeat each element
     row_repeats = np.array(list(Counter(new_row_positions).values()))
