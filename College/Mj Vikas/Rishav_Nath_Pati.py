@@ -4,9 +4,6 @@ import matplotlib.image as mpltimg
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
-
-path = r'D:/Study/Python/openCV/College/res/'
-
 # _______________________PADDING METHODS______________________________
 
 # 0. Zero Padding
@@ -22,7 +19,7 @@ def zero_padding(arr, size):
 # 1. Boundary Padding
 
 
-def duplicate_padding(arr, size):
+def boundary_padding(arr, size):
 
     upper_b = []  # Initialise a list to take the upper border pixels of real image
     left_b = []  # Initialise a list to take the left border pixels of real image
@@ -145,7 +142,7 @@ def padding(img, size, type):
     if type == 0:
         padded_arr = zero_padding(padded_arr, size)
     if(type == 1):
-        padded_arr = duplicate_padding(padded_arr, size)
+        padded_arr = boundary_padding(padded_arr, size)
     else:
         padded_arr = mirror_padding(padded_arr, img, size)
 
@@ -167,7 +164,7 @@ def convolution2D(img, kernel, padding_type):
     # Padding with real image matrix and get a new padded matrix
     padded_arr = padding(img, padding_size, padding_type)
 
-    # Compute the reusltant matrix by convolution
+    # Computing the reusltant matrix by convolution
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
             new_img[i, j] = np.sum(
@@ -193,7 +190,7 @@ def medianFiltering(img, kernel_size, padding_type):
     # Padding with real image matrix and get a new padded matrix
     padded_arr = padding(img, padding_size, padding_type)
 
-    # Compute the resultang image
+    # Compute the resulting image
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
             median = np.zeros((kernel_size, kernel_size))
@@ -204,9 +201,7 @@ def medianFiltering(img, kernel_size, padding_type):
 
     # should handle kernel of any size but odd values only eg. 5x5, 7x7
     # image is a grayscale image
-
-    med_image = new_img  # dummy assignment (to be removed)
-    return med_image
+    return new_img
 
 # PSNR calculation function
 
@@ -230,9 +225,9 @@ def computePSNR(image1, image2):
 
 def main():
     # reading a noisy image
-    noisy_image = mpltimg.imread(path+'noisy_image.jpg')
+    noisy_image = mpltimg.imread('images/noisy_image.jpg')
 
-    original_image = mpltimg.imread(path+'original.jpg')
+    original_image = mpltimg.imread('images/original.jpg')
 
 
 # _____________________________________________________________________
@@ -252,7 +247,7 @@ def main():
 
 # _____________________________________________________________________
 # reading a blurry image
-    blurry_image = mpltimg.imread(path+'blurry_image.jpg')
+    blurry_image = mpltimg.imread('images/blurry_image.jpg')
 
     # Laplacian filter kernel
     kernel = np.array([[1, 1, 1],
@@ -260,6 +255,7 @@ def main():
                        [1, 1, 1]])
 
     laplacian_filtered_image = convolution2D(blurry_image, kernel, 1)
+    print(laplacian_filtered_image)
 
 # performing the addition as in Eqn. 3.6.7 to obtain the sharpened image
 
@@ -275,7 +271,7 @@ def main():
             sharpened_image[i][j] = blurry_image[i][j] + \
                 c * laplacian_filtered_image[i][j]
 
-    # sharpened_image = blurry_image # dummy assignment (to be removed)
+    print(sharpened_image)
 
 
 # _____________________________________________________________________
